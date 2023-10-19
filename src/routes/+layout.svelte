@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import { user_data } from '../ts/stores';
+	import { page } from '$app/stores';
 
 	$: container_scroll = 0;
 
@@ -13,9 +14,11 @@
 </script>
 
 <div class="wrapper">
-	<div class="absolute top-0 left-0 w-full">
-		<Header scroll={container_scroll} />
-	</div>
+	{#if !($page?.route?.id == '/login')}
+		<div class="absolute top-0 left-0 w-full">
+			<Header scroll={container_scroll} />
+		</div>
+	{/if}
 	<div
 		class="w-full flex-grow overflow-auto pt-16"
 		on:scroll={(e) => e?.target?.scrollTop && (container_scroll = e.target.scrollTop)}

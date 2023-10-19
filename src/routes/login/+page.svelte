@@ -23,17 +23,3 @@
 	</div>
 	<Button>Log in</Button>
 </div>
-
-<style lang="postcss">
-	.kontik {
-		background: linear-gradient(
-				203deg,
-				#8d32a3 9.16%,
-				#629ef8 53.83%,
-				#34124e 92.09%,
-				#5c369a 113.92%
-			),
-			url('perlinnoise.png'), lightgray 0% / cover no-repeat;
-		background-blend-mode: hard-light, normal;
-	}
-</style>
