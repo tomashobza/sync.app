@@ -1,3 +1,50 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    /* background-color: #34124E; */
+
+    background: linear-gradient(
+				203deg,
+				#8d32a3 9.16%,
+				#629ef8 53.83%,
+				#34124e 92.09%,
+				#5c369a 113.92%
+			),
+			url('/images/perlin.png'), lightgray 50%;
+		background-blend-mode: hard-light, normal;
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+        overflow: hidden
+}
+
+body {
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-right: env(safe-area-inset-right);
+    padding-left: env(safe-area-inset-left);
+
+    height: 100%;
+    width: 100%;
+    overflow: hidden
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+button:focus {
+    outline: none !important;
+}
