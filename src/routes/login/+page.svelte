@@ -13,10 +13,14 @@
 	<div class="text-2xl font-bold">Project planner</div>
 	<div class="flex flex-col gap-4 text-[#2f2f2f] my-8 w-full max-w-[18rem]">
 		<Input placeholder="Email address">
-			<EnvelopeIcon />
+			<div class="w-6">
+				<EnvelopeIcon />
+			</div>
 		</Input>
 		<Input placeholder="Password" type="password">
-			<LockIcon />
+			<div class="w-6">
+				<LockIcon />
+			</div>
 		</Input>
 		<!-- <input type="email" placeholder="Email address:" />
 			<input type="password" /> -->
