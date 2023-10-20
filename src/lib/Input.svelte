@@ -12,7 +12,7 @@
 <div
 	class="w-full bg-white text-[#2f2f2f] text-lg flex flex-row items-center gap-2 px-3 py-1 rounded-full"
 >
-	<div class="flex-shrink-0 w-6">
+	<div class="flex-shrink-0">
 		<slot />
 	</div>
 	<input
