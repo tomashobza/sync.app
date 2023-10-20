@@ -5,5 +5,7 @@ export const user_data = writable<{
     name: string;
     id: string;
     email: string;
-} | null>(null);
+} | null>({
+    name: "Anastasia", id: "1", email: ""
+});
 
