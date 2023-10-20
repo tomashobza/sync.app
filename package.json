@@ -4,9 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently \"pnpm --prefix client run start\" \"pnpm --prefix server run start\""
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Tomáš Hobza",
+  "license": "ISC",
+  "dependencies": {
+    "pnpm": "^8.9.2"
+  }
 }
