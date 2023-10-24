@@ -8,9 +8,9 @@
 
 <div class="header" style="backdrop-filter: blur({blur_val}px)">
 	<div>{$user_data?.name ?? 'unknown'}</div>
-	<div>
+	<button on:click>
 		<Burger />
-	</div>
+	</button>
 </div>
 
 <style lang="postcss">
