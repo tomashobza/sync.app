@@ -6,7 +6,6 @@
 	export let showPassword = false;
 
 	export let value: string;
-	$: console.log(value);
 </script>
 
 <div
