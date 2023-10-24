@@ -3,20 +3,38 @@
 	import Header from '$lib/Header.svelte';
 	import { onMount } from 'svelte';
 	import '../app.css';
-	import { user_data } from '../ts/stores';
+	import { user_data, user_token } from '../ts/stores';
 	import { page } from '$app/stores';
+	import Menu from '$lib/Menu.svelte';
+	import { auth } from '../ts/firebase';
+	import { onAuthStateChanged } from 'firebase/auth';
+	import toast, { Toaster } from 'svelte-french-toast';
+
+	onMount(() => {
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				user_token.set(user);
+			} else {
+				if (!$page?.route?.id?.includes('/login')) goto('/login');
+			}
+		});
+
+		user_token.subscribe((v) => {
+			!v && goto('/login');
+		});
+	});
 
 	$: container_scroll = 0;
 
-	onMount(() => {
-		if (!$user_data) goto('/login');
-	});
+	let showMenu = false;
 </script>
+
+<Toaster />
 
 <div class="wrapper">
 	{#if !($page?.route?.id == '/login')}
 		<div class="absolute top-0 left-0 w-full">
-			<Header scroll={container_scroll} />
+			<Header scroll={container_scroll} on:click={() => (showMenu = true)} />
 		</div>
 	{/if}
 	<div
@@ -25,6 +43,10 @@
 	>
 		<slot />
 	</div>
+
+	{#if showMenu}
+		<Menu on:close={() => (showMenu = false)} />
+	{/if}
 </div>
 
 <style lang="postcss">
