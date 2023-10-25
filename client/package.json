@@ -38,6 +38,7 @@
 		"@capacitor/cli": "^5.5.0",
 		"@capacitor/core": "^5.5.0",
 		"@capacitor/ios": "^5.5.0",
+		"dayjs": "^1.11.10",
 		"firebase": "^10.5.0",
 		"svelte-french-toast": "^1.2.0"
 	}
