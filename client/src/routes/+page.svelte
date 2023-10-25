@@ -1,16 +1,12 @@
-<div class="flex flex-col items-center gap-6">
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
-	<div class="w-[10rem] h-[5rem] bg-white rounded-md">ahoj</div>
+<script>
+	import ProjectCard from '$lib/ProjectCard.svelte';
+	import { projects } from '$ts/stores';
+</script>
+
+<div
+	class="flex flex-col items-center md:flex-row md:items-stretch md:flex-wrap md:justify-center gap-6 p-6"
+>
+	{#each $projects as project, i}
+		<ProjectCard {project} {i} />
+	{/each}
 </div>
