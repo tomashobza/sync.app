@@ -18,7 +18,6 @@
 				if (!$page?.route?.id?.includes('/login')) goto('/login');
 			}
 		});
-
 		user_token.subscribe((v) => {
 			!v && goto('/login');
 		});
