@@ -1,12 +1,9 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getAuth, createUserWithEmailAndPassword, type Auth } from 'firebase/auth';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { Capacitor } from '@capacitor/core';
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
 	apiKey: 'AIzaSyCpCf1o-eCBPFb5trtc2gVbOaRAbsXftYo',
 	authDomain: 'itu-projekt-23307.firebaseapp.com',
@@ -17,11 +14,18 @@ const firebaseConfig = {
 	measurementId: 'G-1BTPXSZNF0'
 };
 
-// Initialize Firebase
 export let app: FirebaseApp;
 export let auth: Auth;
 
-// export const init = () => {
+// if (Capacitor.getPlatform() === 'web') {
+// For web, use the Firebase JS SDK
 app = initializeApp(firebaseConfig);
 auth = getAuth();
-// };
+
+// Initialize other Firebase services for the web as needed.
+// } else {
+// 	// For Capacitor (iOS, Android), you would typically use a dedicated Capacitor plugin.
+// 	// Initialize Firebase using the Capacitor Firebase plugin here.
+// 	// NOTE: The exact method calls might differ based on the plugin's documentation.
+// 	// Make sure to follow the documentation of the Capacitor Firebase plugin you're using.
+// }
