@@ -7,20 +7,22 @@
 	import { page } from '$app/stores';
 	import Menu from '$lib/Menu.svelte';
 	import { auth } from '../ts/firebase';
+	import '$ts/db';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import toast, { Toaster } from 'svelte-french-toast';
 
 	onMount(() => {
 		onAuthStateChanged(auth, (user) => {
+			console.log(user);
 			if (user) {
 				user_token.set(user);
 			} else {
 				if (!$page?.route?.id?.includes('/login')) goto('/login');
 			}
 		});
-		user_token.subscribe((v) => {
-			!v && goto('/login');
-		});
+		// user_token.subscribe((v) => {
+		// 	!v && goto('/login');
+		// });
 	});
 
 	$: container_scroll = 0;
