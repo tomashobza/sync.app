@@ -9,7 +9,10 @@
 	import { user_token } from '$ts/stores';
 	import { goto } from '$app/navigation';
 
+	let handlingLogin = false;
+
 	const handleLogin = () => {
+		handlingLogin = true;
 		toast.promise(login(email, password), {
 			loading: 'Logging in...',
 			success: 'Log in successful!',
@@ -17,7 +20,8 @@
 		});
 	};
 
-	$: if ($user_token) {
+	$: if ($user_token && !handlingLogin) {
+		toast.success('Log in successful!');
 		goto('/');
 	}
 
@@ -41,5 +45,7 @@
 			<input type="password" /> -->
 	</div>
 	<Button on:click={handleLogin}>Log in</Button>
-	<button class="py-2 mt-4 underline" on:click={() => goto('/login/new')}>Create an account</button>
+	<button class="py-2 mt-4 underline underline-offset-2" on:click={() => goto('/login/new')}
+		>Create an account</button
+	>
 </div>
