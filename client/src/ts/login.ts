@@ -4,9 +4,10 @@ import {
 	createUserWithEmailAndPassword,
 	updateProfile
 } from 'firebase/auth';
-import { auth } from '$ts/firebase';
+import { auth, db } from '$ts/firebase';
 import { user_token } from '$ts/stores';
 import { goto } from '$app/navigation';
+import { Timestamp, doc, setDoc } from 'firebase/firestore';
 
 export const login = (email: string, password: string) =>
 	new Promise((resolve, reject) => {
@@ -28,21 +29,26 @@ export const signin = (username: string, email: string, password: string) =>
 	new Promise((resolve, reject) => {
 		createUserWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
-				updateProfile(userCredential.user, {
-					displayName: username
-				}).then(
-					function () {
-						user_token.set(userCredential.user);
-						goto('/');
+				// Instead of updating the profile, write to Firestore
+				const userDocRef = doc(db, 'users', userCredential.user.uid);
+				setDoc(userDocRef, {
+					displayName: username,
+					email: email,
+					uid: userCredential.user.uid,
+					photoURL: userCredential.user.photoURL,
+					createdAt: Timestamp.now()
+				})
+					.then(() => {
+						user_token.set(userCredential.user); // Assuming user_token is a store or global variable
+						goto('/'); // Assuming goto is a function to navigate to a route
 						resolve(userCredential.user);
-					},
-					function (error) {
+					})
+					.catch((error) => {
 						const errorCode = error.code;
 						const errorMessage = error.message;
 						console.error(errorCode, errorMessage);
 						reject(error);
-					}
-				);
+					});
 			})
 			.catch((error) => {
 				const errorCode = error.code;
