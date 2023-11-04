@@ -43,57 +43,59 @@ user_data.set({
 
 /// PROJECTS
 
-const q = query(collection(db, 'projects'));
+user_token.subscribe((_) => {
+	const q = query(collection(db, 'projects'));
 
-const unsubscribeProjects = onSnapshot(
-	q,
-	(querySnapshot) => {
-		// toast.success('Projects updated');
+	const unsubscribeProjects = onSnapshot(
+		q,
+		(querySnapshot) => {
+			// toast.success('Projects updated');
 
-		const projs: Project[] = [];
+			const projs: Project[] = [];
 
-		Promise.all(
-			querySnapshot.docs.map(async (docum) => {
-				const data = docum.data();
-				// Assuming duedate is a Firestore Timestamp, convert it to a Date
-				data.duedate = new Date(data.duedate.toDate());
+			Promise.all(
+				querySnapshot.docs.map(async (docum) => {
+					const data = docum.data();
+					// Assuming duedate is a Firestore Timestamp, convert it to a Date
+					data.duedate = new Date(data.duedate.toDate());
 
-				if (!data?.members?.includes(get(user_token)?.uid)) return;
+					if (!data?.members?.includes(get(user_token)?.uid)) return;
 
-				const members: Member[] = [];
+					const members: Member[] = [];
 
-				if (data.members?.length > 0) {
-					await Promise.all(
-						data.members.map(async (uid: string) => {
-							if (uid) {
-								const docSnap = await getDoc(doc(db, 'users', uid));
-								if (docSnap.exists()) {
-									members.push(docSnap.data() as Member);
+					if (data.members?.length > 0) {
+						await Promise.all(
+							data.members.map(async (uid: string) => {
+								if (uid) {
+									const docSnap = await getDoc(doc(db, 'users', uid));
+									if (docSnap.exists()) {
+										members.push(docSnap.data() as Member);
+									}
 								}
-							}
-						})
-					);
-				}
+							})
+						);
+					}
 
-				data['members'] = members;
-				data['id'] = docum.id;
+					data['members'] = members;
+					data['id'] = docum.id;
 
-				projs.push(data as Project);
-			})
-		)
-			.then(() => {
-				projs.sort((a, b) => a.duedate.getTime() - b.duedate.getTime());
-				projects.set(projs);
-				// console.log(projs);
-			})
-			.catch((error) => {
-				console.error('Error processing documents: ', error);
-			});
-	},
-	(error) => {
-		console.error('Error listening to updates: ', error);
-	}
-);
+					projs.push(data as Project);
+				})
+			)
+				.then(() => {
+					projs.sort((a, b) => a.duedate.getTime() - b.duedate.getTime());
+					projects.set(projs);
+					// console.log(projs);
+				})
+				.catch((error) => {
+					console.error('Error processing documents: ', error);
+				});
+		},
+		(error) => {
+			console.error('Error listening to updates: ', error);
+		}
+	);
+});
 
 export const createProject = (projectData: {
 	name: string;
