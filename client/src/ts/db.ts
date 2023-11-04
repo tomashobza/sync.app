@@ -1,54 +1,253 @@
 import { get } from 'svelte/store';
-import { projects } from './stores';
-import { db } from './firebase';
-import { addDoc, collection, doc, getDocs, onSnapshot, query } from 'firebase/firestore';
-import type { Project } from './interfaces';
+import { projects, user_data, user_token } from './stores';
+import { auth, db } from './firebase';
+import {
+	DocumentReference,
+	Timestamp,
+	addDoc,
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	onSnapshot,
+	query,
+	updateDoc,
+	where
+} from 'firebase/firestore';
+import type { Member, Project } from './interfaces';
+import type { Unsubscribe } from 'firebase/auth';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import toast from 'svelte-french-toast';
+import { goto } from '$app/navigation';
 
-export const pushShit = () => {
-	get(projects).forEach(async (project) => {
-		const projectCol = collection(db, 'projects');
-		const projectDocRef = await addDoc(projectCol, {
-			name: project.name,
-			duedate: project.duedate,
-			members: project.members.map((v) => v.id)
-		});
-
-		// project.members.forEach(async (member) => {
-		// 	const membersCol = collection(projectDocRef, 'members');
-		// 	await addDoc(membersCol, member);
-		// });
-	});
-};
-
-// export const fetchProjects = async () => {
-// 	const projectsCol = collection(db, 'projects');
-// 	console.log(projectsCol);
-// 	const projectSnapshot = await getDocs(projectsCol);
-
-// 	const projects = projectSnapshot.docs.map((doc) => ({
-// 		id: doc.id,
-// 		...doc.data()
-// 	}));
-
-// 	console.log(projects);
+// export const pushShit = () => {
+// 	get(projects).forEach(async (project) => {
+// 		const projectCol = collection(db, 'projects');
+// 		console.log(
+// 			await addDoc(projectCol, {
+// 				name: project.name,
+// 				duedate: project.duedate,
+// 				members: project.members
+// 			})
+// 		);
+// 	});
 // };
 
-const q = query(collection(db, 'projects'));
-console.log(q);
-const unsubscribe = onSnapshot(q, (querySnapshot) => {
-	console.log(querySnapshot);
-	const projs: Project[] = [];
-	console.log(
-		querySnapshot.forEach((doc) => {
-			projs.push(doc.data() as Project);
-		})
-	);
-	projs.map((proj) => {
-		// make the firebase timestamp a Date object
-		proj.duedate = (proj.duedate as any).toDate();
-
-		return proj;
+/*
+user_data.set({
+		name: value?.displayName || 'unknown',
+		id: value?.uid || '0',
+		email: value?.email || ''
 	});
-	console.log(projs);
-	projects.set(projs);
+	*/
+
+/// PROJECTS
+
+const q = query(collection(db, 'projects'));
+
+const unsubscribeProjects = onSnapshot(
+	q,
+	(querySnapshot) => {
+		// toast.success('Projects updated');
+
+		const projs: Project[] = [];
+
+		Promise.all(
+			querySnapshot.docs.map(async (docum) => {
+				const data = docum.data();
+				// Assuming duedate is a Firestore Timestamp, convert it to a Date
+				data.duedate = new Date(data.duedate.toDate());
+
+				if (!data?.members?.includes(get(user_token)?.uid)) return;
+
+				const members: Member[] = [];
+
+				if (data.members?.length > 0) {
+					await Promise.all(
+						data.members.map(async (uid: string) => {
+							if (uid) {
+								const docSnap = await getDoc(doc(db, 'users', uid));
+								if (docSnap.exists()) {
+									members.push(docSnap.data() as Member);
+								}
+							}
+						})
+					);
+				}
+
+				data['members'] = members;
+				data['id'] = docum.id;
+
+				projs.push(data as Project);
+			})
+		)
+			.then(() => {
+				projs.sort((a, b) => a.duedate.getTime() - b.duedate.getTime());
+				projects.set(projs);
+				// console.log(projs);
+			})
+			.catch((error) => {
+				console.error('Error processing documents: ', error);
+			});
+	},
+	(error) => {
+		console.error('Error listening to updates: ', error);
+	}
+);
+
+export const createProject = (projectData: {
+	name: string;
+	duedate: Timestamp;
+	members: string[];
+}) => addDoc(collection(db, 'projects'), projectData);
+export const saveProject = (projectData: Project) => {
+	const projectDocRef = doc(db, 'projects', projectData.id);
+	const projectDataParsed: {
+		id: string;
+		name: string;
+		duedate: Timestamp;
+		members: string[];
+		links: string[];
+	} = {
+		id: projectData.id,
+		name: projectData.name,
+		duedate: Timestamp.fromDate(projectData.duedate),
+		members: projectData.members.map((member) => member.uid),
+		links: projectData.links ?? []
+	};
+
+	console.log(projectDataParsed);
+	return updateDoc(projectDocRef, projectDataParsed);
+};
+
+export const removeMemberFromProject = async (
+	projectId: string,
+	userId: string,
+	members: string[]
+): Promise<void> => {
+	// Reference to the project document
+	const projectDocRef = doc(db, 'projects', projectId);
+
+	try {
+		// Update the project document, removing the user ID from the 'members' array
+		await updateDoc(projectDocRef, {
+			members: members.filter((member) => member !== userId)
+		});
+		toast.success('User removed from project!');
+		goto('/');
+		// loadProjects();
+	} catch (error) {
+		toast.error('Error removing user ID from project!');
+		console.error(error);
+	}
+};
+
+export const getProjectTitle = async (projectId: string): Promise<string> => {
+	const projectDocRef = await doc(db, 'projects', projectId);
+	const projectDoc = await getDoc(projectDocRef);
+	console.log(projectDoc);
+	return await projectDoc.data()?.name;
+};
+
+export const addProjectMember = async (projectId: string) => {
+	if (!get(user_token)?.uid) return;
+
+	const projectDocRef = doc(db, 'projects', projectId);
+	const projectDoc = await getDoc(projectDocRef);
+	const projectData = projectDoc.data() as Project;
+	const projectMembers: string[] =
+		projectData?.members?.map((member) => member?.uid)?.filter((v) => !!v) ?? [];
+	projectMembers.push(get(user_token)?.uid ?? '');
+
+	try {
+		await updateDoc(projectDocRef, {
+			members: projectMembers
+		});
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+export const updateProject = async (projectId: string, projectDataDiff: Partial<Project>) => {
+	const projectDocRef = doc(db, 'projects', projectId);
+	const projectDoc = await getDoc(projectDocRef);
+	const projectData = projectDoc.data() as Project;
+
+	try {
+		await updateDoc(projectDocRef, {
+			...projectData,
+			...projectDataDiff
+		});
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+/// USERS
+
+let unsubscribeUsers: Unsubscribe;
+user_token.subscribe((user) => {
+	if (user && user?.uid) {
+		unsubscribeUsers?.();
+
+		// Attach the onSnapshot listener
+		const userDocRef = doc(db, 'users', user?.uid);
+		unsubscribeUsers = onSnapshot(userDocRef, (docSnapshot) => {
+			if (docSnapshot.exists()) {
+				user_data.set(docSnapshot.data() as Member);
+			} else {
+				// TODO: handle no record for logged in user
+				console.log('No such document for the user!');
+			}
+		});
+	}
 });
+
+export const updateUser = async (userData: Partial<Member>): Promise<void> => {
+	const user = get(user_token);
+	if (!user) return;
+
+	const userDocRef = doc(db, 'users', user.uid);
+	try {
+		await updateDoc(userDocRef, { ...get(user_data), ...userData });
+		toast.success('User updated!');
+	} catch (error) {
+		toast.error('Error updating user!');
+		console.error(error);
+	}
+};
+
+export const updatePicture = async (file: File): Promise<void> => {
+	const user = get(user_token);
+	if (!user) return;
+
+	const storage = getStorage();
+	const storageRef = ref(storage, get(user_token)?.uid);
+
+	toast
+		.promise(uploadBytes(storageRef, file), {
+			loading: 'Uploading picture...',
+			success: 'Picture uploaded!',
+			error: 'Error uploading picture!'
+		})
+		.then(async (snapshot) => {
+			console.log('Uploaded a blob or file!', snapshot);
+			updateUser({ photoURL: await getDownloadURL(snapshot.ref) });
+			toast.success('Picture updated!');
+		})
+		.catch((error) => {
+			toast.error('Error updating picture!');
+			console.error(error);
+		});
+
+	// const userDocRef = doc(db, 'users', user.uid);
+	// try {
+	// 	await updateDoc(userDocRef, {
+	// 		photoURL: url
+	// 	});
+	// 	toast.success('Picture updated!');
+	// } catch (error) {
+	// 	toast.error('Error updating picture!');
+	// 	console.error(error);
+	// }
+};
