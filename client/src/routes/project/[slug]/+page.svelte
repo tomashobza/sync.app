@@ -12,7 +12,6 @@
 	import type { Project } from '$ts/interfaces';
 	import { projects, user_token } from '$ts/stores';
 	import { triggerMobileShare } from '$ts/utils';
-	import { error } from '@sveltejs/kit';
 	import dayjs from 'dayjs';
 	import toast from 'svelte-french-toast';
 	import { fly, scale, slide } from 'svelte/transition';

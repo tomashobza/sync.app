@@ -15,7 +15,7 @@
 	{/each}
 
 	<button
-		class="focus:border-white transition-all border-dashed border border-transparent w-full rounded-3xl bg-[#ffffff33] text-white grid place-content-center py-8"
+		class="focus:border-white max-w-[22rem] transition-all border-dashed border border-transparent w-full rounded-3xl bg-[#ffffff33] text-white grid place-content-center py-8"
 		on:click={() => goto('/project/new')}
 	>
 		<PlusIcon />
