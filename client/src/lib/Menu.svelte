@@ -7,6 +7,7 @@
 	import { logout } from '../ts/login';
 	import { goto } from '$app/navigation';
 	import toast from 'svelte-french-toast';
+	import { user_data } from '$ts/stores';
 	const dispatch = createEventDispatcher();
 
 	const links: {
@@ -39,7 +40,7 @@
 <svelte:window bind:innerWidth />
 
 <div
-	class="absolute inset-0 bg-[#34124E] flex flex-col gap-2 p-6"
+	class="absolute inset-0 bg-[#34124E] flex flex-col gap-2 p-6 z-50"
 	transition:fly={{ x: innerWidth, opacity: 1 }}
 >
 	<button class="mb-10 self-end w-5 text-white" on:click={() => dispatch('close')}>
@@ -63,8 +64,13 @@
 			</button>
 		{/each}
 	</div>
-	<button
-		class="self-center px-3 py-2 rounded-full border border-white text-sm text-white transition-all hover:text-[#34124E] hover:bg-white"
-		on:click={handleLogout}>Log Out</button
-	>
+	<div class="self-center flex flex-col items-center gap-4">
+		<button
+			class=" px-3 py-2 rounded-full border border-white text-sm text-white transition-all hover:text-[#34124E] hover:bg-white"
+			on:click={handleLogout}>Log Out</button
+		>
+		<div class="text-xs text-white">
+			Logged in as: <span class="font-bold">{$user_data?.email ?? 'unknown'}</span>
+		</div>
+	</div>
 </div>
