@@ -46,4 +46,7 @@
 			<input type="password" /> -->
 	</div>
 	<Button on:click={handleSignin}>Sign in</Button>
+	<button class="py-2 mt-4 underline underline-offset-2" on:click={() => goto('/login')}
+		>Log in</button
+	>
 </div>
