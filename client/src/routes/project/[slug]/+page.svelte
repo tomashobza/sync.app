@@ -13,12 +13,15 @@
 	import { projects, user_token } from '$ts/stores';
 	import { triggerMobileShare } from '$ts/utils';
 	import dayjs from 'dayjs';
+	import { Timestamp } from 'firebase/firestore';
 	import toast from 'svelte-french-toast';
 	import { fly, scale, slide } from 'svelte/transition';
 
 	let show_links = false;
 	let is_editing = false;
 	let was_changed = false;
+
+	let new_duedate: Date;
 
 	$: projectId = $page.params.slug;
 	$: project = $projects.find((p) => p.id == projectId) as Project;
@@ -52,6 +55,8 @@
 						is_editing = !is_editing;
 						if (!is_editing) {
 							if (!was_changed) return;
+
+							project.duedate = new Date(new_duedate);
 							saveProject(project)
 								.then(() => {
 									toast.success('Project saved!');
@@ -63,8 +68,20 @@
 				>
 					<EditButton />
 				</button>
-				<div class="px-2 py-1 rounded-full border border-[#2f2f2f] text-sm">
-					{dayjs(project?.duedate).format('DD/MM/YYYY') ?? 'unknown'}
+				<div class="relative px-2 py-1 rounded-full border border-[#2f2f2f] text-sm">
+					{#if !is_editing}
+						{dayjs(project?.duedate).format('DD/MM/YYYY') ?? 'unknown'}
+					{:else}
+						<input
+							type="date"
+							class="bg-transparent"
+							value={project?.duedate?.toISOString().split('T')[0] ?? ''}
+							on:input={(e) => {
+								new_duedate = e?.target?.value;
+								was_changed = true;
+							}}
+						/>
+					{/if}
 				</div>
 			</div>
 			<div class="w-full h-6 text-black my-4 flex-shrink-0">
