@@ -154,10 +154,9 @@ export const addProjectMember = async (projectId: string) => {
 
 	const projectDocRef = doc(db, 'projects', projectId);
 	const projectDoc = await getDoc(projectDocRef);
-	const projectData = projectDoc.data() as Project;
-	const projectMembers: string[] =
-		projectData?.members?.map((member) => member?.uid)?.filter((v) => !!v) ?? [];
-	projectMembers.push(get(user_token)?.uid ?? '');
+	const projectData = projectDoc.data();
+	const projectMembers: string[] = projectData?.members?.filter((v: string) => !!v) ?? [];
+	get(user_token)?.uid && projectMembers.push(get(user_token)?.uid as string);
 
 	try {
 		await updateDoc(projectDocRef, {

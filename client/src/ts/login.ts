@@ -64,6 +64,7 @@ export const logout = () =>
 		signOut(auth)
 			.then(() => {
 				user_token.set(null);
+				last_route.set(null);
 				goto('/login');
 				resolve(true);
 			})
