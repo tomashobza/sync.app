@@ -8,7 +8,14 @@
 	import PlusIcon from '$lib/PlusIcon.svelte';
 	import ProgressBar from '$lib/ProgressBar.svelte';
 	import UsersProfile from '$lib/UsersProfile.svelte';
-	import { addProjectMember, getProjectTitle, removeMemberFromProject, saveProject } from '$ts/db';
+	import XIcon from '$lib/XIcon.svelte';
+	import {
+		addProjectMember,
+		getProjectTitle,
+		removeMemberFromProject,
+		saveProject,
+		updateProject
+	} from '$ts/db';
 	import type { Project } from '$ts/interfaces';
 	import { projects, user_token } from '$ts/stores';
 	import { triggerMobileShare } from '$ts/utils';
@@ -31,6 +38,19 @@
 	$: if (!project) {
 		getProjectTitle(projectId).then((v) => (projectTitle = v));
 	}
+
+	const addLink = () => {
+		const link = prompt('Enter a link to add to the project.', 'https://');
+		if (!link) return;
+
+		project.links.push(link);
+		updateProject(project.id, { links: project.links });
+	};
+
+	const removeLink = (link: string) => {
+		project.links = project.links.filter((l) => l != link);
+		updateProject(project.id, { links: project.links });
+	};
 </script>
 
 {#if project}
@@ -129,21 +149,36 @@
 				<div transition:slide|local class="flex flex-col items-stretch py-4">
 					{#if project?.links?.length > 0}
 						<div class="flex flex-row flex-wrap gap-2 transition-all">
-							{#each project?.links ?? [] as link}
-								<a href={link} target="_blank">
-									<div
-										class="flex-shrink-0 rounded-full py-1 px-3 bg-white text-slate-600 underline underline-offset-1 max-w-[8rem] whitespace-nowrap truncate"
+							{#each project?.links ?? [] as link (link)}
+								<a
+									href={is_editing ? '#' : link}
+									class:pointer-events-none={is_editing}
+									target={is_editing ? '_self' : '_blank'}
+									transition:scale
+								>
+									<button
+										class=" pointer-events-auto flex-shrink-0 rounded-full py-1 px-3 bg-white text-slate-600 underline underline-offset-1 max-w-[8rem] flex flex-row items-center transition-all"
+										class:pl-2={is_editing}
+										on:click={() => is_editing && removeLink(link)}
 									>
-										{link}
-									</div>
+										{#if is_editing}
+											<div class="w-4 flex-shrink-0 mr-1">
+												<XIcon />
+											</div>
+										{/if}
+										<div class="flex-shrink whitespace-nowrap truncate">{link}</div>
+									</button>
 								</a>
 							{/each}
 						</div>
 					{/if}
 					<!-- {#if is_editing} -->
 					<button
-						class="bg-white bg-opacity-30 rounded-full py-1 transition-all duration-100 active:scale-95 flex-shrink-0"
-						class:mt-4={project?.links?.length > 0}>+</button
+						class="bg-white bg-opacity-30 rounded-full py-1 transition-all duration-100 active:scale-95 flex-shrink-0 grid place-content-center"
+						class:mt-4={project?.links?.length > 0}
+						on:click={addLink}
+					>
+						<PlusIcon /></button
 					>
 					<!-- {/if} -->
 				</div>
