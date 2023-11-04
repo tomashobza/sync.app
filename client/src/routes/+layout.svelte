@@ -10,10 +10,11 @@
 	import '$ts/db';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import toast, { Toaster } from 'svelte-french-toast';
+	import DetailHeader from '$lib/DetailHeader.svelte';
 
 	onMount(() => {
 		onAuthStateChanged(auth, (user) => {
-			console.log(user);
+			// console.log(user);
 			if (user) {
 				user_token.set(user);
 			} else {
@@ -26,16 +27,21 @@
 	});
 
 	$: container_scroll = 0;
+	$: show_menu = !($page?.route?.id == '/login' || $page?.route?.id?.includes('/project/'));
 
 	let showMenu = false;
 </script>
 
 <Toaster />
 
-<div class="wrapper">
-	{#if !($page?.route?.id == '/login')}
+<div class="wrapper min-w-[20rem]">
+	{#if show_menu}
 		<div class="absolute top-0 left-0 w-full">
 			<Header scroll={container_scroll} on:click={() => (showMenu = true)} />
+		</div>
+	{:else}
+		<div class="absolute top-0 left-0 w-full">
+			<DetailHeader scroll={container_scroll} on:click={() => (showMenu = true)} />
 		</div>
 	{/if}
 	<div
