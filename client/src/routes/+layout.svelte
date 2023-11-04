@@ -3,7 +3,7 @@
 	import Header from '$lib/Header.svelte';
 	import { onMount } from 'svelte';
 	import '../app.css';
-	import { user_data, user_token } from '../ts/stores';
+	import { last_route, user_data, user_token } from '../ts/stores';
 	import { page } from '$app/stores';
 	import Menu from '$lib/Menu.svelte';
 	import { auth } from '../ts/firebase';
@@ -13,6 +13,8 @@
 	import DetailHeader from '$lib/DetailHeader.svelte';
 
 	onMount(() => {
+		last_route.set($page?.url?.pathname);
+
 		onAuthStateChanged(auth, (user) => {
 			// console.log(user);
 			if (user) {

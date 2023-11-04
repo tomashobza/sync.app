@@ -5,16 +5,17 @@ import {
 	updateProfile
 } from 'firebase/auth';
 import { auth, db } from '$ts/firebase';
-import { user_token } from '$ts/stores';
+import { last_route, user_token } from '$ts/stores';
 import { goto } from '$app/navigation';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
+import { get } from 'svelte/store';
 
 export const login = (email: string, password: string) =>
 	new Promise((resolve, reject) => {
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				user_token.set(userCredential.user);
-				goto('/');
+				goto(get(last_route) ?? '/');
 				resolve(userCredential.user);
 			})
 			.catch((error) => {
@@ -39,8 +40,8 @@ export const signin = (username: string, email: string, password: string) =>
 					createdAt: Timestamp.now()
 				})
 					.then(() => {
-						user_token.set(userCredential.user); // Assuming user_token is a store or global variable
-						goto('/'); // Assuming goto is a function to navigate to a route
+						user_token.set(userCredential.user);
+						goto(get(last_route) ?? '/');
 						resolve(userCredential.user);
 					})
 					.catch((error) => {

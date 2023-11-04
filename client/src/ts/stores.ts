@@ -11,6 +11,8 @@ user_token.subscribe((value) => {
 
 export const projects = writable<Project[]>([]);
 
+export const last_route = writable<string | null>(null);
+
 //! DEV
 // projects.set([
 // 	{
