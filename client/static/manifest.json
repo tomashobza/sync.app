@@ -1,6 +1,6 @@
 {
-	"short_name": "svelte-pwa",
-	"name": "svelte-test-pwa",
+	"short_name": "Sync",
+	"name": "Sync",
 	"start_url": "/",
 	"icons": [
 		{
