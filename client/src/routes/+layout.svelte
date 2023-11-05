@@ -30,7 +30,7 @@
 	});
 
 	$: container_scroll = 0;
-	$: show_menu = !($page?.route?.id == '/login' || $page?.route?.id?.includes('/project/'));
+	$: show_menu = !($page?.route?.id?.includes('/login') || $page?.route?.id?.includes('/project/'));
 
 	let showMenu = false;
 </script>
@@ -46,7 +46,7 @@
 		<div class="absolute top-0 left-0 w-full">
 			<Header scroll={container_scroll} on:click={() => (showMenu = true)} />
 		</div>
-	{:else}
+	{:else if !$page?.route?.id?.includes('/login')}
 		<div class="absolute top-0 left-0 w-full">
 			<DetailHeader scroll={container_scroll} on:click={() => (showMenu = true)} />
 		</div>
