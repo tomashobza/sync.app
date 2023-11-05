@@ -3,7 +3,7 @@
 	import Header from '$lib/Header.svelte';
 	import { onMount } from 'svelte';
 	import '../app.css';
-	import { last_route, user_data, user_token } from '../ts/stores';
+	import { editing_task, last_route, user_data, user_token } from '../ts/stores';
 	import { page } from '$app/stores';
 	import Menu from '$lib/Menu.svelte';
 	import { auth } from '../ts/firebase';
@@ -11,6 +11,7 @@
 	import { onAuthStateChanged } from 'firebase/auth';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import DetailHeader from '$lib/DetailHeader.svelte';
+	import EditTaskModal from '$lib/EditTaskModal.svelte';
 
 	onMount(() => {
 		last_route.set($page?.url?.pathname);
@@ -35,6 +36,10 @@
 </script>
 
 <Toaster />
+
+{#if $editing_task}
+	<EditTaskModal />
+{/if}
 
 <div class="wrapper min-w-[20rem]">
 	{#if show_menu}
