@@ -10,16 +10,16 @@
 
 **Téma**:
 
-- [ ] **Každý člen**
+- [X] **Každý člen**
   - Zpráva o návrhu: **popište** Vámi navržené **téma** a uveďte zdůvodnění tématu ve formě naplnění konkrétních uživatelských potřeb.
-- [ ] **Všichni členové týmu**
+- [X] **Všichni členové týmu**
   - Zpráva o návrhu: stačí uvést **vybrané téma** a zdůvodnění.
 
 **Průzkum:**
 
-- [ ] **Každý člen**
+- [X] **Každý člen**
   - Zpráva o návrhu: uveďte **dotazník** ve formě jednotlivých otázek, poznatky získané z odpovědí, analýzu těchto odpovědí s důrazem na potřeby uživatelů a klíčových problémů.
-- [ ] **Každý člen**
+- [X] **Každý člen**
   - Zpráva o návrhu: krátce **popište** Vámi nalezenou **existující aplikaci**, její přednosti a nedostatky; jak se vaše budoucí aplikace bude inspirovat přednostmi a jak bude řešit nedostatky.
 - [ ] **Všichni členové týmu**
   - Zpráva o návrhu: uveďte **klíčové potřeby uživatelů,** uživatelské procesy (jak uživatelé postupují) a klíčové **vlastnosti vaší budoucí aplikace**, které budou tyto potřeby řešit.
