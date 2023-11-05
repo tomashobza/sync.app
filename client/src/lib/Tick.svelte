@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editing_task } from '$ts/stores';
 	import { createEventDispatcher } from 'svelte';
 	import { scale } from 'svelte/transition';
 

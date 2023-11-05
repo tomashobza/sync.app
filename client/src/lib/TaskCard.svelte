@@ -10,6 +10,8 @@
 
 	export let task: Task;
 	export let project: Project;
+
+	export let disabled: boolean = false;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -19,11 +21,10 @@
 	on:click
 >
 	<div class="w-full flex flex-row items-center justify-between">
-		<div class="w-7">
+		<div class="w-7" class:pointer-events-none={disabled}>
 			<Tick
 				bind:ticked={task.done}
 				on:tick={() =>
-					!$editing_task &&
 					updateTask(project?.id, task?.id, { done: !!task?.done }).then(() => {
 						dispatch('tick');
 					})}
