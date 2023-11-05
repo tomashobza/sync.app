@@ -9,11 +9,6 @@
 		style="width: {value * 100}%; background-color: {color}"
 	/>
 
-	<!-- <div
-		class="z-0 absolute inset-0 flex flex-row items-center bg-blend-color justify-end px-2 text-xs text-[#2f2f2f]"
-	>
-		{Math.round(value * 100)}%
-	</div> -->
 	<div
 		class="z-0 absolute inset-0 flex flex-row items-center mix-blend-difference justify-end px-2 text-xs text-white"
 	>
