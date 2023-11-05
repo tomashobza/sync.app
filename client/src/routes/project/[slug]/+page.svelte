@@ -39,6 +39,8 @@
 	$: projectId = $page.params.slug;
 	$: project = $projects.find((p) => p.id == projectId) as Project;
 
+	$: progress = project?.tasks?.filter((t) => t.done).length / project?.tasks?.length;
+
 	let projectTitle: string;
 
 	$: if (!project) {
@@ -111,7 +113,7 @@
 				</div>
 			</div>
 			<div class="w-full h-6 text-black my-4 flex-shrink-0">
-				<ProgressBar value={0.6} color={'#fff'} />
+				<ProgressBar value={progress} color={'#fff'} />
 			</div>
 			<div class="flex flex-row items-center gap-2 transition-all mb-2">
 				<div class="flex flex-row items-center gap-2 flex-grow h-10">
@@ -220,6 +222,8 @@
 				<TaskCard
 					{project}
 					{task}
+					on:tick={() =>
+						(progress = project?.tasks?.filter((t) => t.done).length / project?.tasks?.length)}
 					on:click={() => is_editing && editing_task.set({ task, project })}
 				/>
 			{/each}
