@@ -6,6 +6,7 @@ import {
 	Timestamp,
 	addDoc,
 	collection,
+	deleteDoc,
 	doc,
 	getDoc,
 	getDocs,
@@ -14,7 +15,7 @@ import {
 	updateDoc,
 	where
 } from 'firebase/firestore';
-import type { Member, Project } from './interfaces';
+import type { Member, Project, Task } from './interfaces';
 import type { Unsubscribe } from 'firebase/auth';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import toast from 'svelte-french-toast';
@@ -43,7 +44,7 @@ user_data.set({
 
 /// PROJECTS
 
-user_token.subscribe((_) => {
+export const loadProjects = async () => {
 	const q = query(collection(db, 'projects'));
 
 	const unsubscribeProjects = onSnapshot(
@@ -79,12 +80,32 @@ user_token.subscribe((_) => {
 					data['members'] = members;
 					data['id'] = docum.id;
 
+					data['links'] = data['links'] ?? [];
+
+					// write all tasks from the subcollection tasks into data['tasks']
+					const tasksCol = collection(db, 'projects', docum.id, 'tasks');
+					const tasksSnap = await getDocs(tasksCol);
+					const tasks: Task[] = [];
+					tasksSnap.forEach((taskDoc) => {
+						const taskData = taskDoc.data();
+						taskData['id'] = taskDoc.id;
+
+						// replace the assigned uid with the member object
+						const assignedMember = members.find((member) => member.uid === taskData.assigned);
+						taskData['assigned'] = assignedMember ?? taskData.assigned;
+						console.log(taskData);
+
+						tasks.push(taskData as any);
+					});
+					data['tasks'] = tasks;
+
 					projs.push(data as Project);
 				})
 			)
 				.then(() => {
 					projs.sort((a, b) => a.duedate.getTime() - b.duedate.getTime());
 					projects.set(projs);
+					console.log(projs);
 					// console.log(projs);
 				})
 				.catch((error) => {
@@ -95,7 +116,9 @@ user_token.subscribe((_) => {
 			console.error('Error listening to updates: ', error);
 		}
 	);
-});
+};
+
+user_token.subscribe(loadProjects);
 
 export const createProject = (projectData: {
 	name: string;
@@ -179,6 +202,50 @@ export const updateProject = async (projectId: string, projectDataDiff: Partial<
 			...projectData,
 			...projectDataDiff
 		});
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+export const deleteProject = async (projectId: string) => {
+	const projectDocRef = doc(db, 'projects', projectId);
+
+	const rusure = confirm('Are you sure you want to delete this project?');
+	if (!rusure) return;
+
+	try {
+		await deleteDoc(projectDocRef);
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+export const createTask = async (projectId: string, taskData: Omit<Task, 'id'>) => {
+	const tasksCol = collection(db, 'projects', projectId, 'tasks');
+	try {
+		await addDoc(tasksCol, taskData);
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+export const updateTask = async (
+	projectId: string,
+	taskId: string,
+	taskData: Partial<Omit<Task, 'id'>>
+) => {
+	const taskDocRef = doc(db, 'projects', projectId, 'tasks', taskId);
+	try {
+		await updateDoc(taskDocRef, taskData);
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+export const removeTask = async (projectId: string, taskId: string) => {
+	const taskDocRef = doc(db, 'projects', projectId, 'tasks', taskId);
+	try {
+		await deleteDoc(taskDocRef);
 	} catch (error) {
 		console.error(error);
 	}
