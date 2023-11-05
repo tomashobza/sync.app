@@ -17,16 +17,12 @@
 		last_route.set($page?.url?.pathname);
 
 		onAuthStateChanged(auth, (user) => {
-			// console.log(user);
 			if (user) {
 				user_token.set(user);
 			} else {
 				if (!$page?.route?.id?.includes('/login')) goto('/login');
 			}
 		});
-		// user_token.subscribe((v) => {
-		// 	!v && goto('/login');
-		// });
 	});
 
 	$: container_scroll = 0;
