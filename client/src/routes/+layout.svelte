@@ -31,6 +31,10 @@
 	let showMenu = false;
 </script>
 
+<svelte:head>
+	<title>Sync</title>
+</svelte:head>
+
 <Toaster />
 
 {#if $editing_task}
