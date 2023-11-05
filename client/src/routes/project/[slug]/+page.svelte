@@ -7,17 +7,23 @@
 	import EditButton from '$lib/EditButton.svelte';
 	import PlusIcon from '$lib/PlusIcon.svelte';
 	import ProgressBar from '$lib/ProgressBar.svelte';
+	import TaskCard from '$lib/TaskCard.svelte';
+	import Tick from '$lib/Tick.svelte';
 	import UsersProfile from '$lib/UsersProfile.svelte';
 	import XIcon from '$lib/XIcon.svelte';
 	import {
 		addProjectMember,
+		createTask,
+		deleteProject,
 		getProjectTitle,
+		loadProjects,
 		removeMemberFromProject,
 		saveProject,
-		updateProject
+		updateProject,
+		updateTask
 	} from '$ts/db';
 	import type { Project } from '$ts/interfaces';
-	import { projects, user_token } from '$ts/stores';
+	import { editing_task, projects, user_token } from '$ts/stores';
 	import { triggerMobileShare } from '$ts/utils';
 	import dayjs from 'dayjs';
 	import { Timestamp } from 'firebase/firestore';
@@ -200,10 +206,32 @@
 					>
 					<button
 						class="bg-red-400 bg-opacity-50 transition-all active:scale-95 grid place-content-center px-2 py-2 rounded-xl"
-						>Delete project</button
+						on:click={() => deleteProject(project?.id)}>Delete project</button
 					>
 				</div>
 			{/if}
+		</div>
+
+		<div class="text-xl px-6 text-white">Tasks:</div>
+		<div
+			class="flex flex-row items-center p-6 pt-0 overflow-auto gap-6 h-[10rem] snap-mandatory snap-x"
+		>
+			{#each project?.tasks ?? [] as task}
+				<TaskCard
+					{project}
+					{task}
+					on:click={() => is_editing && editing_task.set({ task, project })}
+				/>
+			{/each}
+			<button
+				class="bg-white bg-opacity-30 rounded-xl text-white w-full flex-shrink-0 max-w-[15rem] h-full grid place-content-center border-2 border-transparent transition-all border-dashed active:border-white snap-center"
+				on:click={() => {
+					createTask(project?.id, { title: 'New task', done: false, assigned: '' });
+					loadProjects();
+				}}
+			>
+				<PlusIcon />
+			</button>
 		</div>
 	</div>
 {:else}
