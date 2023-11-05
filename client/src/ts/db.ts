@@ -224,6 +224,7 @@ export const createTask = async (projectId: string, taskData: Omit<Task, 'id'>) 
 	const tasksCol = collection(db, 'projects', projectId, 'tasks');
 	try {
 		await addDoc(tasksCol, taskData);
+		toast.success('Task created!');
 	} catch (error) {
 		console.error(error);
 	}
@@ -246,6 +247,7 @@ export const removeTask = async (projectId: string, taskId: string) => {
 	const taskDocRef = doc(db, 'projects', projectId, 'tasks', taskId);
 	try {
 		await deleteDoc(taskDocRef);
+		toast.success('Task deleted!');
 	} catch (error) {
 		console.error(error);
 	}
