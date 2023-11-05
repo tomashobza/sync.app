@@ -21,27 +21,6 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import toast from 'svelte-french-toast';
 import { goto } from '$app/navigation';
 
-// export const pushShit = () => {
-// 	get(projects).forEach(async (project) => {
-// 		const projectCol = collection(db, 'projects');
-// 		console.log(
-// 			await addDoc(projectCol, {
-// 				name: project.name,
-// 				duedate: project.duedate,
-// 				members: project.members
-// 			})
-// 		);
-// 	});
-// };
-
-/*
-user_data.set({
-		name: value?.displayName || 'unknown',
-		id: value?.uid || '0',
-		email: value?.email || ''
-	});
-	*/
-
 /// PROJECTS
 
 export const loadProjects = async () => {
@@ -93,7 +72,6 @@ export const loadProjects = async () => {
 						// replace the assigned uid with the member object
 						const assignedMember = members.find((member) => member.uid === taskData.assigned);
 						taskData['assigned'] = assignedMember ?? taskData.assigned;
-						console.log(taskData);
 
 						tasks.push(taskData as any);
 					});
@@ -105,8 +83,6 @@ export const loadProjects = async () => {
 				.then(() => {
 					projs.sort((a, b) => a.duedate.getTime() - b.duedate.getTime());
 					projects.set(projs);
-					console.log(projs);
-					// console.log(projs);
 				})
 				.catch((error) => {
 					console.error('Error processing documents: ', error);
@@ -141,7 +117,6 @@ export const saveProject = (projectData: Project) => {
 		links: projectData.links ?? []
 	};
 
-	console.log(projectDataParsed);
 	return updateDoc(projectDocRef, projectDataParsed);
 };
 
@@ -170,7 +145,6 @@ export const removeMemberFromProject = async (
 export const getProjectTitle = async (projectId: string): Promise<string> => {
 	const projectDocRef = await doc(db, 'projects', projectId);
 	const projectDoc = await getDoc(projectDocRef);
-	console.log(projectDoc);
 	return await projectDoc.data()?.name;
 };
 
@@ -267,7 +241,7 @@ user_token.subscribe((user) => {
 				user_data.set(docSnapshot.data() as Member);
 			} else {
 				// TODO: handle no record for logged in user
-				console.log('No such document for the user!');
+				console.error('No such document for the user!');
 			}
 		});
 	}
