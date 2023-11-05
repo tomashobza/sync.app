@@ -6,6 +6,14 @@ export interface Project {
 	members: Member[];
 	links: string[];
 	duedate: Date;
+	tasks: Task[];
+}
+
+export interface Task {
+	id: string;
+	title: string;
+	assigned: string;
+	done: boolean;
 }
 
 export interface Member extends DocumentData {
