@@ -17,6 +17,8 @@
 
 	let showCard = false;
 	onMount(() => (showCard = true));
+
+	$: progress = project?.tasks?.filter((t) => t.done).length / project?.tasks?.length;
 </script>
 
 {#if showCard}
@@ -45,7 +47,7 @@
 				{/each}
 			</div>
 			<div class="w-full h-6">
-				<ProgressBar value={0.6} color={colors[i % colors.length]} />
+				<ProgressBar value={progress} color={colors[i % colors.length]} hasWhiteBg />
 			</div>
 		</div>
 		{#if show_warning}

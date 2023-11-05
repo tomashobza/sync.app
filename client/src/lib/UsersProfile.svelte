@@ -12,7 +12,7 @@
 	{:else}
 		<img
 			src={photoUrl}
-			class="object-cover bg-center bg-white h-full object-center"
+			class="object-cover bg-center bg-white h-full w-full object-center"
 			alt="profile"
 		/>
 	{/if}
