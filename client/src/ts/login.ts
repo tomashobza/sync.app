@@ -15,7 +15,6 @@ export const login = (email: string, password: string) =>
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				user_token.set(userCredential.user);
-				goto(get(last_route) ?? '/');
 				resolve(userCredential.user);
 			})
 			.catch((error) => {
@@ -41,7 +40,6 @@ export const signin = (username: string, email: string, password: string) =>
 				})
 					.then(() => {
 						user_token.set(userCredential.user);
-						goto(get(last_route) ?? '/');
 
 						resolve(userCredential.user);
 					})
