@@ -6,23 +6,24 @@
 	import LockIcon from '$lib/LockIcon.svelte';
 	import { login } from '$ts/login';
 	import toast from 'svelte-french-toast';
-	import { user_token } from '$ts/stores';
+	import { last_route, user_token } from '$ts/stores';
 	import { goto } from '$app/navigation';
 
 	let handlingLogin = false;
 
 	const handleLogin = () => {
 		handlingLogin = true;
-		toast.promise(login(email, password), {
-			loading: 'Logging in...',
-			success: 'Log in successful!',
-			error: 'Could not log in.'
-		});
+		toast
+			.promise(login(email, password), {
+				loading: 'Logging in...',
+				success: 'Log in successful!',
+				error: 'Could not log in.'
+			})
+			.then(() => (handlingLogin = false));
 	};
 
 	$: if ($user_token && !handlingLogin) {
-		toast.success('Log in successful!');
-		goto('/');
+		goto($last_route?.includes('login') ? '/' : $last_route ?? '/');
 	}
 
 	let email: string;
