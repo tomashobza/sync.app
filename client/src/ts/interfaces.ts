@@ -21,5 +21,4 @@ export interface Member extends DocumentData {
 	uid: string;
 	email: string;
 	photoURL: string;
-	createdAt: Timestamp;
 }
