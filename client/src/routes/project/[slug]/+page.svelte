@@ -220,6 +220,7 @@
 		>
 			{#each project?.tasks ?? [] as task}
 				<TaskCard
+					disabled={is_editing}
 					{project}
 					{task}
 					on:tick={() =>
