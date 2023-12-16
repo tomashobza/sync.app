@@ -24,6 +24,34 @@
 			"type": "image/png"
 		}
 	],
+	"shortcuts": [
+		{
+			"name": "New Project",
+			"url": "/project/new",
+			"icons": [
+				{
+					"src": "/icon-192x192.png",
+					"sizes": "192x192",
+					"type": "image/png"
+				}
+			],
+			"short_name": "New Project",
+			"description": "Create a new project"
+		},
+		{
+			"name": "Edit Profile",
+			"url": "/profile",
+			"icons": [
+				{
+					"src": "/icon-192x192.png",
+					"sizes": "192x192",
+					"type": "image/png"
+				}
+			],
+			"short_name": "Edit Profile",
+			"description": "Edit your profile"
+		}
+	],
 	"display": "standalone",
 	"scope": "/",
 	"theme_color": "#34124E",
