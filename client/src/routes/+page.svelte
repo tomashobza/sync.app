@@ -9,8 +9,7 @@
 	import { quintOut } from 'svelte/easing';
 
 	let ordered_projects: Project[] = [];
-	$: if ($user_data?.favourites && $projects) {
-		console.log('change');
+	$: if ($user_data && $projects) {
 		ordered_projects = $projects.sort((a, b) => {
 			if ($user_data?.favourites?.includes(a.id) && !$user_data?.favourites?.includes(b.id))
 				return -1;
