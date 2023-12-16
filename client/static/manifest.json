@@ -54,8 +54,8 @@
 	],
 	"display": "standalone",
 	"scope": "/",
-	"theme_color": "#34124E",
-	"background_color": "#34124E",
+	"theme_color": "#5D4CBE",
+	"background_color": "#5D4CBE",
 
 	"description": "Keep your team projects organized and on track with Sync."
 }
