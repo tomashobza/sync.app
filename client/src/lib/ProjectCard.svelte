@@ -6,6 +6,10 @@
 	import { onMount } from 'svelte';
 	import WarningIcon from './WarningIcon.svelte';
 	import { goto } from '$app/navigation';
+	import Star from './Star.svelte';
+	import { user_data } from '$ts/stores';
+	import { addFavouriteProject, removeFavouriteProject } from '$ts/db';
+	import { getColorFromString } from '$ts/utils';
 
 	const colors = ['#51E5FF', '#FDE74C', '#EC368D'];
 	export let i = 0;
@@ -18,7 +22,19 @@
 	let showCard = false;
 	onMount(() => (showCard = true));
 
-	$: progress = project?.tasks?.filter((t) => t.done).length / project?.tasks?.length;
+	const favouriteHandle = (e: MouseEvent) => {
+		e.stopPropagation();
+		if (!$user_data?.uid) return;
+		if ($user_data?.favourites?.includes(project?.id)) {
+			removeFavouriteProject($user_data?.uid, project?.id);
+			$user_data?.favourites?.splice($user_data?.favourites?.indexOf(project?.id), 1);
+		} else {
+			addFavouriteProject($user_data?.uid, project?.id);
+			$user_data?.favourites?.push(project?.id);
+		}
+	};
+
+	$: progress = project?.tasks?.filter((t) => t.done).length / project?.tasks?.length || 0;
 </script>
 
 {#if showCard}
@@ -34,9 +50,13 @@
 				<div class="flex-grow text-3xl font-bold truncate">
 					{project?.name ?? 'unknown'}
 				</div>
+
+				<button class="p-2 cursor-pointer" on:click={favouriteHandle}>
+					<Star isFilled={$user_data?.favourites?.includes(project?.id)} />
+				</button>
 				<div
 					class="text-sm px-2 py-1 rounded-full border border-[#2f2f2f]"
-					style="background-color: {colors[i % colors.length]}"
+					style="background-color: {getColorFromString(project?.name)}"
 				>
 					{dayjs(project?.duedate).format('DD/MM/YYYY') ?? 'unknown'}
 				</div>
@@ -47,7 +67,7 @@
 				{/each}
 			</div>
 			<div class="w-full h-6">
-				<ProgressBar value={progress} color={colors[i % colors.length]} hasWhiteBg />
+				<ProgressBar value={progress} color={getColorFromString(project?.name)} hasWhiteBg />
 			</div>
 		</div>
 		{#if show_warning}

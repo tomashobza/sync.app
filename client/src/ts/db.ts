@@ -5,6 +5,8 @@ import {
 	DocumentReference,
 	Timestamp,
 	addDoc,
+	arrayRemove,
+	arrayUnion,
 	collection,
 	deleteDoc,
 	doc,
@@ -283,15 +285,43 @@ export const updatePicture = async (file: File): Promise<void> => {
 			toast.error('Error updating picture!');
 			console.error(error);
 		});
+};
 
-	// const userDocRef = doc(db, 'users', user.uid);
-	// try {
-	// 	await updateDoc(userDocRef, {
-	// 		photoURL: url
-	// 	});
-	// 	toast.success('Picture updated!');
-	// } catch (error) {
-	// 	toast.error('Error updating picture!');
-	// 	console.error(error);
-	// }
+// Function to get favourite projects for a user
+export const getFavouriteProjects = async (userId: string): Promise<string[]> => {
+	try {
+		const userRef = doc(db, 'users', userId);
+		const userDoc = await getDoc(userRef);
+		const userData = userDoc.data() as Member | undefined;
+		return userData?.favourites ?? [];
+	} catch (error) {
+		console.error("Error fetching user's favourite projects:", error);
+		throw error;
+	}
+};
+
+// Function to add a favourite project for a user
+export const addFavouriteProject = async (userId: string, projectId: string): Promise<void> => {
+	try {
+		const userRef = doc(db, 'users', userId);
+		await updateDoc(userRef, {
+			favourites: arrayUnion(projectId)
+		});
+	} catch (error) {
+		console.error('Error adding favourite project:', error);
+		throw error;
+	}
+};
+
+// Function to remove a favourite project from a user
+export const removeFavouriteProject = async (userId: string, projectId: string): Promise<void> => {
+	try {
+		const userRef = doc(db, 'users', userId);
+		await updateDoc(userRef, {
+			favourites: arrayRemove(projectId)
+		});
+	} catch (error) {
+		console.error('Error removing favourite project:', error);
+		throw error;
+	}
 };

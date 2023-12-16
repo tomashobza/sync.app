@@ -39,7 +39,7 @@
 	$: projectId = $page.params.slug;
 	$: project = $projects.find((p) => p.id == projectId) as Project;
 
-	$: progress = project?.tasks?.filter((t) => t.done).length / project?.tasks?.length;
+	$: progress = project?.tasks?.filter((t) => t.done).length / project?.tasks?.length || 0;
 
 	let projectTitle: string;
 

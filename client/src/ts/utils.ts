@@ -27,3 +27,20 @@ export const triggerMobileShare = async (
 		}
 	}
 };
+
+export const getColorFromString = (input: string): string => {
+	// Define the colors array
+	const colors = ['#51E5FF', '#FDE74C', '#EC368D'];
+
+	// Simple hash function to convert string to a number
+	let hash = 0;
+	for (let i = 0; i < input.length; i++) {
+		const char = input.charCodeAt(i);
+		hash = (hash << 5) - hash + char;
+		hash = hash & hash; // Convert to 32bit integer
+	}
+
+	// Use the absolute value of the hash modulo the number of colors to choose a color
+	const index = Math.abs(hash) % colors.length;
+	return colors[index];
+};
