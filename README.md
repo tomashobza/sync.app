@@ -30,7 +30,7 @@ npm run dev
 ```
 Navštivte `http://localhost:5173` v prohlížeči.
 
-> Varování, projekt využívá skutečný backend. Klíč přidám pouze, abych umožnil testování, ovšem výrazně mezím počet požadavků abych zabránil zneužití.
+> Varování, projekt využívá skutečný backend. Klíč přidám pouze, abych umožnil testování, ovšem výrazně omezím počet požadavků abych zabránil zneužití.
 
 ### Build pro produkční nasazení
 ```
