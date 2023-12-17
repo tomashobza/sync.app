@@ -15,10 +15,18 @@
 	import { user_data } from '$ts/stores';
 	const dispatch = createEventDispatcher();
 
-	const links: {
-		route: string;
-		name: string;
-	}[] = [
+	/**
+	 * Represents a menu component.
+	 * @typedef {Object} Link
+	 * @property {string} route - The route of the link.
+	 * @property {string} name - The name of the link.
+	 */
+
+	/**
+	 * An array of links.
+	 * @type {Link[]}
+	 */
+	const links = [
 		{
 			route: '/',
 			name: 'Show Projects'
@@ -29,8 +37,12 @@
 		}
 	];
 
-	let innerWidth: number = 0;
+	let innerWidth = 0;
 
+	/**
+	 * Handles the logout action.
+	 * Displays a toast message while logging out and dispatches the 'close' event when finished.
+	 */
 	const handleLogout = () => {
 		toast
 			.promise(logout(), {
@@ -50,6 +62,7 @@
 >
 	<button class="mb-10 self-end w-5 text-white" on:click={() => dispatch('close')}>
 		<XIcon />
+		<!-- Close button -->
 	</button>
 
 	<div class="flex flex-col items-stretch flex-grow">
@@ -58,13 +71,15 @@
 				class="w-full py-6 text-white border-b border-white flex flex-row items-center gap-2 transition-all hover:scale-[.98]"
 				class:border-t={i == 0}
 				on:click={() => {
-					goto(route);
-					dispatch('close');
+					goto(route); // Navigate to the specified route
+					dispatch('close'); // Close the menu
 				}}
 			>
 				<div class="flex-grow text-left">{name}</div>
+				<!-- Link name -->
 				<div class="w-5">
 					<ArrowRight />
+					<!-- Arrow icon -->
 				</div>
 			</button>
 		{/each}
@@ -74,8 +89,10 @@
 			class=" px-3 py-2 rounded-full border border-white text-sm text-white transition-all hover:text-[#34124E] hover:bg-white"
 			on:click={handleLogout}>Log Out</button
 		>
+		<!-- Log Out button -->
 		<div class="text-xs text-white">
 			Logged in as: <span class="font-bold">{$user_data?.email ?? 'unknown'}</span>
+			<!-- Logged-in user's email -->
 		</div>
 	</div>
 </div>

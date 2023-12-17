@@ -9,7 +9,8 @@
 	import Burger from './Burger.svelte';
 
 	export let scroll: number = 0;
-	$: blur_val = Math.min(scroll / 20, 5);
+
+	// Calculate the background opacity based on the scroll position
 	$: bg_val = Math.min(scroll / 20, 8);
 </script>
 
@@ -18,6 +19,7 @@
 	style=" background: linear-gradient(rgba(52	,18, 78, {(bg_val - 1) / 10}), #00000000)"
 	transition:fly={{ y: -50 }}
 >
+	<!-- Display the user's display name if available, otherwise display 'unknown' -->
 	<div>{$user_data?.displayName ?? 'unknown'}</div>
 	<button on:click>
 		<Burger />

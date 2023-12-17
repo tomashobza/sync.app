@@ -1,3 +1,10 @@
+/**
+ * @module login
+ * @description
+ * Provides functions for logging in and out of the app.
+ * @author Anastasia Butok (xbutok00)
+ */
+
 import {
 	signInWithEmailAndPassword,
 	signOut,
@@ -8,8 +15,14 @@ import { auth, db } from '$ts/firebase';
 import { last_route, user_token } from '$ts/stores';
 import { goto } from '$app/navigation';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
-import { get } from 'svelte/store';
 
+/**
+ * Logs in a user with the provided email and password.
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ * @returns {Promise<User>} - A promise that resolves with the logged-in user.
+ * @throws {Error} - If there is an error during the login process.
+ */
 export const login = (email: string, password: string) =>
 	new Promise((resolve, reject) => {
 		signInWithEmailAndPassword(auth, email, password)
@@ -25,6 +38,15 @@ export const login = (email: string, password: string) =>
 			});
 	});
 
+/**
+ * Signs in a user with the provided username, email, and password.
+ *
+ * @param {string} username - The username of the user.
+ * @param {string} email - The email of the user.
+ * @param {string} password - The password of the user.
+ * @returns {Promise<User>} A promise that resolves with the signed-in user.
+ * @throws {Error} If there is an error during the sign-in process.
+ */
 export const signin = (username: string, email: string, password: string) =>
 	new Promise((resolve, reject) => {
 		createUserWithEmailAndPassword(auth, email, password)
@@ -58,6 +80,10 @@ export const signin = (username: string, email: string, password: string) =>
 			});
 	});
 
+/**
+ * Logs out the user.
+ * @returns A promise that resolves to true if the logout is successful, or rejects with an error if it fails.
+ */
 export const logout = () =>
 	new Promise((resolve, reject) => {
 		signOut(auth)

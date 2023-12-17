@@ -1,5 +1,8 @@
 import type { DocumentData, Timestamp } from 'firebase/firestore';
 
+/**
+ * Represents a project.
+ */
 export interface Project {
 	name: string;
 	id: string;
@@ -9,6 +12,9 @@ export interface Project {
 	tasks: Task[];
 }
 
+/**
+ * Represents a task.
+ */
 export interface Task {
 	id: string;
 	title: string;
@@ -16,6 +22,9 @@ export interface Task {
 	done: boolean;
 }
 
+/**
+ * Represents a member with their information.
+ */
 export interface Member extends DocumentData {
 	displayName: string;
 	uid: string;

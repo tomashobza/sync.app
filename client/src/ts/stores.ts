@@ -1,3 +1,10 @@
+/**
+ * @module writable stores
+ * @description
+ * Provides writable stores for the app.
+ * @author everyone, ...
+ */
+
 import { writable } from 'svelte/store';
 import type { User } from 'firebase/auth';
 import type { Member, Project, Task } from './interfaces';

@@ -1,3 +1,10 @@
+/**
+ * @module firebase
+ * @description
+ * Provides functions for initializing Firebase and accessing its services.
+ * @author Tomáš Hobza (xhobza03)
+ */
+
 import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';

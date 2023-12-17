@@ -5,14 +5,12 @@
 
 <script lang="ts">
 	import { fly } from 'svelte/transition';
-	import { user_data } from '../ts/stores';
-	import Burger from './Burger.svelte';
 	import ChevronLeft from './ChevronLeft.svelte';
 	import { goto } from '$app/navigation';
 
 	export let scroll: number = 0;
-	$: blur_val = Math.min(scroll / 20, 5);
-	$: bg_val = Math.min(scroll / 50, 8);
+	$: blur_val = Math.min(scroll / 20, 5); // Calculate the blur value based on the scroll position
+	$: bg_val = Math.min(scroll / 50, 8); // Calculate the background value based on the scroll position
 </script>
 
 <div

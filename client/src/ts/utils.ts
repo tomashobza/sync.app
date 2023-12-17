@@ -1,5 +1,20 @@
+/**
+ * @module utils
+ * @description
+ * Provides utility functions for the app.
+ * @author Tomáš Hobza (xhobza03)
+ */
+
 import toast from 'svelte-french-toast';
 
+/**
+ * Triggers mobile share functionality using the Web Share API if available,
+ * otherwise copies the URL to the clipboard.
+ * @param title - The title of the content to be shared.
+ * @param text - The text content to be shared.
+ * @param url - The URL of the content to be shared.
+ * @returns A promise that resolves when the sharing or copying is complete.
+ */
 export const triggerMobileShare = async (
 	title: string,
 	text: string,
@@ -28,6 +43,11 @@ export const triggerMobileShare = async (
 	}
 };
 
+/**
+ * Returns a color from an input string.
+ * @param input - The input string.
+ * @returns The color as a string.
+ */
 export const getColorFromString = (input: string): string => {
 	// Define the colors array
 	const colors = ['#51E5FF', '#FDE74C', '#EC368D'];
