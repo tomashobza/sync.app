@@ -1,3 +1,8 @@
+<!--
+@component Main layout
+@author Tomáš Hobza (xhobza03)
+-->
+
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Header from '$lib/Header.svelte';

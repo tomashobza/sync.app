@@ -1,3 +1,8 @@
+<!--
+@component Progress bar
+@author Tomáš Hobza (xhobza03)
+-->
+
 <script lang="ts">
 	export let value = 0;
 	export let color = '#51E5FF';

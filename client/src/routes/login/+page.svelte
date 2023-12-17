@@ -1,3 +1,8 @@
+<!--
+@component Login page
+@author Anastasia Butok (xbutok00)
+-->
+
 <script lang="ts">
 	import Logo from '$lib/Logo.svelte';
 	import Input from '$lib/Input.svelte';

@@ -1,3 +1,8 @@
+<!--
+@component Top navbar with user info and menu button
+@author Tomáš Hobza (xhobza03)
+-->
+
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { user_data } from '../ts/stores';

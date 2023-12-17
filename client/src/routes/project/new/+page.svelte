@@ -1,3 +1,8 @@
+<!--
+@component New project page
+@author Anastasia Butok (xbutok00)
+-->
+
 <script lang="ts">
 	import Button from '$lib/Button.svelte';
 	import { createProject } from '$ts/db';

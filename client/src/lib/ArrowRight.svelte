@@ -1,3 +1,8 @@
+<!--
+@component Arrow icon
+@author Anastasia Butok (xbutok00)
+-->
+
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	fill="none"

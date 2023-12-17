@@ -1,3 +1,8 @@
+<!--
+@component Eye icon
+@author Anastasia Butok (xbutok00)
+-->
+
 <script lang="ts">
 	export let isOpen = false;
 </script>

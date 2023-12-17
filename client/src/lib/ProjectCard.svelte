@@ -1,3 +1,8 @@
+<!--
+@component Card overview of a project
+@author Tomáš Hobza (xhobza03)
+-->
+
 <script lang="ts">
 	import type { Project } from '$ts/interfaces';
 	import dayjs from 'dayjs';

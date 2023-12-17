@@ -1,3 +1,8 @@
+<!--
+@component Card for task in project
+@author Tomáš Hobza (xhobza03)
+-->
+
 <script lang="ts">
 	import { updateTask } from '$ts/db';
 	import type { Project, Task } from '$ts/interfaces';

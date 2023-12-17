@@ -1,3 +1,8 @@
+<!--
+@component Main page
+@author Tomáš Hobza (xhobza03)
+-->
+
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import PlusIcon from '$lib/PlusIcon.svelte';

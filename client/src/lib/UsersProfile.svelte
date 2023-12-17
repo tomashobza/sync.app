@@ -1,3 +1,8 @@
+<!--
+@component User's profile picture
+@author Tomáš Hobza (xhobza03)
+-->
+
 <script lang="ts">
 	export let photoUrl: string;
 	export let initials: string;

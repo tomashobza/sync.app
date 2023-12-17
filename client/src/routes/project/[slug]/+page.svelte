@@ -1,3 +1,8 @@
+<!--
+@component Project detail page
+@author Nikita Koliada (xkolia00) [& Anastasia Butok (xbutok00)]
+-->
+
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -152,6 +157,7 @@
 						<div>Links</div>
 					</button>
 				</div>
+				<!-- ADDING LINKS by Anastasia Butok (xbutok00) -->
 				{#if show_links}
 					<div transition:slide|local class="flex flex-col items-stretch py-4">
 						{#if project?.links?.length > 0}
@@ -179,7 +185,6 @@
 								{/each}
 							</div>
 						{/if}
-						<!-- {#if is_editing} -->
 						<button
 							class="bg-white bg-opacity-30 rounded-full py-1 transition-all duration-100 active:scale-95 flex-shrink-0 grid place-content-center"
 							class:mt-4={project?.links?.length > 0}
@@ -187,9 +192,9 @@
 						>
 							<PlusIcon /></button
 						>
-						<!-- {/if} -->
 					</div>
 				{/if}
+				<!-- ADDING LINKS by Anastasia Butok (xbutok00) -->
 				{#if is_editing}
 					<div transition:slide|local class="grid grid-cols-2 gap-2">
 						<button

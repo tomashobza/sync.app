@@ -1,3 +1,8 @@
+<!--
+@component Modal for editing the task (title, assignee, delete)
+@author Anastasia Butok (xbutok00)
+-->
+
 <script lang="ts">
 	import { editing_task } from '$ts/stores';
 	import { fade, fly } from 'svelte/transition';

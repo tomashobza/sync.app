@@ -1,3 +1,8 @@
+<!--
+@component Task tick icon
+@author Tomáš Hobza (xhobza03)
+-->
+
 <script lang="ts">
 	import { editing_task } from '$ts/stores';
 	import { createEventDispatcher } from 'svelte';

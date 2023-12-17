@@ -1,3 +1,8 @@
+<!--
+@component Universal input
+@author Anastasia Butok (xbutok00)
+-->
+
 <script lang="ts">
 	import EyeIcon from './EyeIcon.svelte';
 

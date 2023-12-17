@@ -1,3 +1,8 @@
+<!--
+@component Star icon
+@author Tomáš Hobza (xhobza03)
+-->
+
 <script lang="ts">
 	export let isFilled = false;
 </script>

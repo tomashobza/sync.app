@@ -1,3 +1,8 @@
+<!--
+@component Menu button icon
+@author Tomáš Hobza (xhobza03)
+-->
+
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	fill="none"

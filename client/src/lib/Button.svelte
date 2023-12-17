@@ -1,3 +1,8 @@
+<!--
+@component Universal button
+@author Anastasia Butok (xbutok00)
+-->
+
 <script lang="ts">
 	export let hasMinWidth: boolean = true;
 	export let color: string = 'primary';

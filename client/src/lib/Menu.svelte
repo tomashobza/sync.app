@@ -1,3 +1,8 @@
+<!--
+@component Menu
+@author Tomáš Hobza (xhobza03)
+-->
+
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { quartInOut, sineIn } from 'svelte/easing';
