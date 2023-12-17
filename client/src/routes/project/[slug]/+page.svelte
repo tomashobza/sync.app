@@ -89,7 +89,7 @@
 							is_editing = !is_editing;
 							if (!is_editing) {
 								if (!was_changed) return;
-								project.duedate = new Date(new_duedate);
+								project.duedate = new_duedate ? new Date(new_duedate) : project.duedate;
 								saveProject(project)
 									.then(() => {
 										toast.success('Project saved!');
