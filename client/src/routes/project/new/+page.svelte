@@ -53,25 +53,25 @@
 </script>
 
 <div class="w-full h-full flex flex-col items-stretch justify-center gap-10 px-6">
-	// Animated title for the new project page
+	<!-- Animated title for the new project page -->
 	<div in:scale class="text-2xl text-white drop-shadow self-center">Make a project</div>
 
-	// Form section for entering project details
+	<!-- Form section for entering project details -->
 	<div in:scale class="rounded-xl bg-white p-4 flex flex-col gap-4 items-stretch">
-		// Input field for the project name
+		<!-- Input field for the project name -->
 		<div class="flex flex-row items-center h-8 gap-2">
 			<div class="text-slate-500">Name:</div>
 			<input bind:value={name} type="text" class="h-full flex-grow" placeholder="Type here..." />
 		</div>
 		<hr />
-		// Input field for the project due date
+		<!-- Input field for the project due date -->
 		<div class="flex flex-row items-center h-8 gap-2">
 			<div class="text-slate-500">Due date:</div>
 			<input bind:value={duedate} type="date" class="h-full flex-grow" placeholder="Type here..." />
 		</div>
 	</div>
 
-	// Button to trigger project creation
+	<!-- Button to trigger project creation -->
 	<div class="w-full flex flex-col items-stretch justify-stretch" in:scale>
 		<Button on:click={createHandle}>Create</Button>
 	</div>

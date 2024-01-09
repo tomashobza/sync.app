@@ -249,7 +249,7 @@
 					</div>
 				{/if}
 
-				<!-- ADDING LINKS by Anastasia Butok (xbutok00) -->
+				<!-- ADDING LINKS by Nikita Koliada (xkolia00) -->
 				{#if is_editing}
 					<div transition:slide|local class="grid grid-cols-2 gap-2">
 						<button
